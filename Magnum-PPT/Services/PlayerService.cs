@@ -47,6 +47,20 @@ namespace Magnum_PPT.Services
         }
 
 
+        // Metodo para obtener un jugador por Id
+        public async Task<PlayerDTO> GetPlayerBynameAsync(string name)
+        {
+            var player = await _playerRepository.GetPlayerByNameAsync(name);
+            return _mapper.Map<PlayerDTO>(player);
+        }
+
+        // Método para obtener un jugador por nombre
+        public async Task<PlayerDTO> GetPlayerByNameAsync(string name)
+        {
+            var player = await _playerRepository.GetPlayerByNameAsync(name);
+            return _mapper.Map<PlayerDTO>(player);
+        }
+
         // Metodo para devolver todos los juadores
         public async Task<IEnumerable<PlayerDTO>> GetAllPlayersAsync()
         {

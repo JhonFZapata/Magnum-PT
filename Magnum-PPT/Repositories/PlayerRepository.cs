@@ -19,6 +19,12 @@ namespace Magnum_PPT.Repositories
             return await _context.Players.FindAsync(id);
         }
 
+        // Método para obtener un jugador por nombre
+        public async Task<Player> GetPlayerByNameAsync(string name)
+        {
+            return await _context.Players.FirstOrDefaultAsync(p => p.Name == name);
+        }
+
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
             return await _context.Players.ToListAsync();

@@ -6,6 +6,7 @@ namespace Magnum_PPT.Services
     {
         Task<PlayerDTO> RegisterPlayerAsync(PlayerDTO playerDto);
         Task<PlayerDTO> GetPlayerByIdAsync(int id);
+        Task<PlayerDTO> GetPlayerByNameAsync(string name);
         Task<IEnumerable<PlayerDTO>> GetAllPlayersAsync();
     }
 }

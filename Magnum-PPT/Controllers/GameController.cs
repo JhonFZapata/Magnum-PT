@@ -26,13 +26,15 @@ namespace Magnum_PPT.Controllers
         {
             try
             {
-                var player = await _playerService.GetPlayerByIdAsync(startGameDto.PlayerOneId);
-                if (player == null) 
+                //var player = await _playerService.GetPlayerByIdAsync(startGameDto.PlayerOneId);
+                var playerOne = await _playerService.GetPlayerByNameAsync(startGameDto.PlayerOneName);
+                var playerTwo = await _playerService.GetPlayerByNameAsync(startGameDto.PlayerTwoName);
+                if (playerOne == null || playerTwo == null) 
                 {
-                    return NotFound(new { message = "jugadores no existen" });
+                    return NotFound(new { message = "uno o ambos jugadores no existen" });
                 }
                 // Llamada al servicio
-                var game = await _gameService.StartGameAsync(startGameDto.PlayerOneId, startGameDto.PlayerTwoId);
+                var game = await _gameService.StartGameAsync(playerOne.Id, playerTwo.Id);
 
                 // Validar existencia del juego
                 if (game == null)
@@ -40,8 +42,17 @@ namespace Magnum_PPT.Controllers
                     return NotFound(new { message = "No se pudo iniciar el juego." });
                 }
 
-                // Retornar juego
-                return Ok(game); 
+                Console.WriteLine($"Jugador 1: {playerOne.Name}, Jugador 2: {playerTwo.Name}");
+
+                var response = new
+                {
+                    Game = game,
+                    PlayerOneName = playerOne.Name,
+                    PlayerTwoName = playerTwo.Name
+                };
+
+                // Retornar juego y nombres
+                return Ok(response);
             }
             catch (Exception ex)
             {

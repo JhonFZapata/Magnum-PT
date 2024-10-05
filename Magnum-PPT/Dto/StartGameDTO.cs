@@ -2,7 +2,7 @@
 {
     public class StartGameDTO
     {
-        public int PlayerOneId { get; set; }
-        public int PlayerTwoId { get; set; }
+        public string PlayerOneName { get; set; }
+        public string PlayerTwoName { get; set; }
     }
 }
