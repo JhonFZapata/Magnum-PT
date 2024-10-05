@@ -24,11 +24,19 @@ namespace Magnum_PPT.Controllers
         {
             try
             {
+                // Validar si existe el jugador
+                var playerExist = await _playerService.GetPlayerByIdAsync(playerDto.Id);
+
+                if (playerExist == null)
+                {
+                    return BadRequest("Jugador no existente");
+                }
+
                 // Registrar jugador
                 var registeredPlayer = await _playerService.RegisterPlayerAsync(playerDto);
 
                 // retornar la respuesta
-                return CreatedAtAction(nameof(GetPlayerById), new { id = registeredPlayer.Id }, registeredPlayer);
+                return CreatedAtAction(nameof(GetPlayerByNameAsync), new { id = registeredPlayer.Id }, registeredPlayer);
             }
             catch (ArgumentException ex)
             {
@@ -39,7 +47,7 @@ namespace Magnum_PPT.Controllers
 
         // Endpoint para obtener un jugador por su Id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlayerById(int id)
+        public async Task<IActionResult> GetPlayerByNameAsync(int id)
         {
             var player = await _playerService.GetPlayerByIdAsync(id);
             if (player == null)

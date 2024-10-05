@@ -1,4 +1,5 @@
 ﻿using Magnum_PPT.Dto;
+using Magnum_PPT.Repositories;
 using Magnum_PPT.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Magnum_PPT.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly IPlayerService _playerService;
 
-        public GameController(IGameService gameService)
+        public GameController(IGameService gameService, IPlayerService playerService)
         {
             _gameService = gameService;
+            _playerService = playerService;
         }
 
         // Endpoint para manejar el inicio de un juego       
@@ -23,6 +26,11 @@ namespace Magnum_PPT.Controllers
         {
             try
             {
+                var player = await _playerService.GetPlayerByIdAsync(startGameDto.PlayerOneId);
+                if (player == null) 
+                {
+                    return NotFound(new { message = "jugadores no existen" });
+                }
                 // Llamada al servicio
                 var game = await _gameService.StartGameAsync(startGameDto.PlayerOneId, startGameDto.PlayerTwoId);
 

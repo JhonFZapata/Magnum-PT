@@ -7,5 +7,7 @@
         public string PlayerTwoMove { get; set; }  // Movimiento del Jugador 2 (como string)
         public int? WinnerPlayerId { get; set; }  // ID del jugador que ganó la ronda (null si es empate)
         public DateTime CreatedAt { get; set; }  // Fecha de creación de la ronda
+        public string PlayerOneName { get; set; }
+        public string PlayerTwoName { get; set; }
     }
 }

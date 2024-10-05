@@ -46,6 +46,7 @@ namespace Magnum_PPT.Services
             return _mapper.Map<PlayerDTO>(player);
         }
 
+
         // Metodo para devolver todos los juadores
         public async Task<IEnumerable<PlayerDTO>> GetAllPlayersAsync()
         {

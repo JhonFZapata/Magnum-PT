@@ -9,12 +9,14 @@ namespace Magnum_PPT.Services
     {
         private readonly IGameRepository _gameRepository;
         private readonly IRoundRepository _roundRepository;
+        private readonly IPlayerService _playerService;
         private readonly IMapper _mapper;
 
-        public GameService(IGameRepository gameRepository, IRoundRepository roundRepository, IMapper mapper)
+        public GameService(IGameRepository gameRepository, IRoundRepository roundRepository, IPlayerService playerService, IMapper mapper)
         {
             _gameRepository = gameRepository;
             _roundRepository = roundRepository;
+            _playerService = playerService;
             _mapper = mapper;
         }
 
@@ -43,6 +45,15 @@ namespace Magnum_PPT.Services
             if (game == null || game.IsFinished)
             {
                 throw new ArgumentException("El juego no existe o ya ha terminado.");
+            }
+
+            // Obtener los nombres de los jugadores
+            var playerOne = await _playerService.GetPlayerByIdAsync(game.PlayerOneId);
+            var playerTwo = await _playerService.GetPlayerByIdAsync(game.PlayerTwoId);
+
+            if (playerOne == null || playerTwo == null)
+            {
+                throw new ArgumentException("Uno o ambos jugadores no existen.");
             }
 
             // Crear una ronda
@@ -75,7 +86,11 @@ namespace Magnum_PPT.Services
 
             await _gameRepository.SaveChangesAsync();
 
-            return _mapper.Map<RoundDTO>(round);
+            var roundDto = _mapper.Map<RoundDTO>(round);
+            roundDto.PlayerOneName = playerOne.Name;
+            roundDto.PlayerTwoName = playerTwo.Name;
+            return roundDto;
+            //return _mapper.Map<RoundDTO>(round);
         }
 
         // Método para determinar el ganador una ronda
