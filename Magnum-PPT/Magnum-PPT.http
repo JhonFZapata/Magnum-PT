@@ -1,0 +1,6 @@
+@Magnum_PPT_HostAddress = http://localhost:5212
+
+GET {{Magnum_PPT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
